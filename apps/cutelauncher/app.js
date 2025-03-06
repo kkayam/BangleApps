@@ -44,7 +44,7 @@
     const ITEM_HEIGHT = 95;
 
     // Create scroll indicator overlay
-    const overlayWidth = 30;
+    const overlayWidth = 25;
     const overlayHeight = 35;
     const overlay = Graphics.createArrayBuffer(overlayWidth, overlayHeight, 16, { msb: true });
 

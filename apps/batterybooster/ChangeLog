@@ -1,2 +1,3 @@
+0.3: Fix to unreliable auto soft-off behaviour
 0.2: Added configurable settings for all power-saving features * Added settings menu to configure auto soft-off, LCD timeout, and brightness * Added customizable soft-off delay (1-12 hours) * Made all features independently toggleable
 0.1: New app introduced to the app loader!

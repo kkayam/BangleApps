@@ -1,0 +1,25 @@
+{
+    "id": "bootmanager",
+    "name": "Boot Manager",
+    "shortName": "BootMgr",
+    "version": "0.1",
+    "description": "Manage boot applications on your Bangle.js",
+    "type": "app",
+    "tags": "tool,system,boot",
+    "supports": [
+        "BANGLEJS2"
+    ],
+    "allow_emulator": true,
+    "icon": "bootmanager.png",
+    "storage": [
+        {
+            "name": "bootmanager.app.js",
+            "url": "app.js"
+        },
+        {
+            "name": "bootmanager.img",
+            "url": "app-icon.js",
+            "evaluate": true
+        }
+    ]
+}

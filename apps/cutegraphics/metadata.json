@@ -1,0 +1,27 @@
+{
+  "id": "cutegraphics",
+  "name": "Cute Graphics",
+  "shortName": "Graphics",
+  "version": "0.01",
+  "description": "A collection of cute graphics that can be used in other apps. Provides functions to list, get, and use graphics in your applications.",
+  "icon": "app.png",
+  "type": "module",
+  "tags": "graphics,ui,drawing",
+  "provides_modules": [
+    "cutegraphics"
+  ],
+  "supports": [
+    "BANGLEJS2"
+  ],
+  "readme": "README.md",
+  "storage": [
+    {
+      "name": "graphics.json",
+      "url": "graphics.json"
+    },
+    {
+      "name": "cutegraphics",
+      "url": "lib.js"
+    }
+  ]
+}

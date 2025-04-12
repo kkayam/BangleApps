@@ -2,7 +2,7 @@
   "id": "cuteicons",
   "name": "Cute Icons",
   "shortName": "Icons",
-  "version": "0.01",
+  "version": "0.02",
   "description": "A collection of cute icons that can be used in other apps. Provides functions to list, get, and use icons in your applications.",
   "icon": "app.png",
   "type": "module",

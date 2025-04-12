@@ -27,7 +27,10 @@ exports.getIcon = function (name) {
   if (!name || typeof name !== "string") {
     throw new Error("Icon name must be a non-empty string");
   }
-  return require("heatshrink").decompress(atob(icons[name])) || null;
+  if (icons[name]) {
+    return require("heatshrink").decompress(atob(icons[name]));
+  }
+  return null;
 };
 
 // Get total number of icons

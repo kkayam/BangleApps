@@ -9,21 +9,23 @@
 
     let softOffTimeout;
 
-    Bangle.on("lock", (on) => {
-        if (on) {
-            if (settings.autoSoftOff) {
+    if (settings.autoSoftOff) {
+        Bangle.on("lock", (on) => {
+            if (on) {
                 softOffTimeout = setTimeout(() => Bangle.softOff(), settings.softOffDelay * 3600000);
             }
-            if (settings.smartLCDTimeout) {
-                Bangle.setLCDTimeout(2);
+            else {
+                if (softOffTimeout) clearTimeout(softOffTimeout);
             }
-        }
-        else {
-            if (softOffTimeout) clearTimeout(softOffTimeout);
-        }
-    });
+        });
+    }
 
     if (settings.smartLCDTimeout) {
+        Bangle.on("lock", (on) => {
+            if (on) {
+                Bangle.setLCDTimeout(2);
+            }
+        });
         Bangle.on("touch", () => {
             Bangle.setLCDTimeout(10);
         });

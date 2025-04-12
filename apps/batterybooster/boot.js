@@ -1,24 +1,20 @@
 {
     // Load settings
     let settings = require('Storage').readJSON('batterybooster.settings.json', 1) || {
-        autoSoftOff: true,
-        softOffDelay: 3,
         smartLCDTimeout: true,
         autoBrightness: true
     };
 
     let softOffTimeout;
 
-    if (settings.autoSoftOff) {
-        Bangle.on("lock", (on) => {
-            if (on) {
-                softOffTimeout = setTimeout(() => Bangle.softOff(), settings.softOffDelay * 3600000);
-            }
-            else {
-                if (softOffTimeout) clearTimeout(softOffTimeout);
-            }
-        });
-    }
+    Bangle.on("lock", (on) => {
+        if (on) {
+            softOffTimeout = setTimeout(() => Bangle.softOff(), 3 * 3600000);
+        }
+        else {
+            if (softOffTimeout) clearTimeout(softOffTimeout);
+        }
+    });
 
     if (settings.smartLCDTimeout) {
         Bangle.on("lock", (on) => {

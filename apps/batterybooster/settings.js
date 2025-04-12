@@ -4,8 +4,6 @@
     // initialize with default settings
     const storage = require('Storage');
     let settings = {
-        autoSoftOff: true,
-        softOffDelay: 3, // hours
         smartLCDTimeout: true,
         autoBrightness: true
     };
@@ -23,24 +21,6 @@
     const menu = {
         '': { 'title': 'Battery Booster' },
         '< Back': back,
-        'Auto Soft-Off': {
-            value: settings.autoSoftOff,
-            onchange: () => {
-                settings.autoSoftOff = !settings.autoSoftOff;
-                save();
-            }
-        },
-        'Soft-Off Delay': {
-            value: settings.softOffDelay,
-            min: 1,
-            max: 12,
-            step: 1,
-            format: v => v + "h",
-            onchange: v => {
-                settings.softOffDelay = v;
-                save();
-            }
-        },
         'Smart LCD Timeout': {
             value: settings.smartLCDTimeout,
             onchange: () => {

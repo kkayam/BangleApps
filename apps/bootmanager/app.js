@@ -1,4 +1,6 @@
 {// Text Reader for Bangle.js 2
+    let on_switch = require("cutegraphics").getGraphic("on_slider");
+    let off_switch = require("cutegraphics").getGraphic("off_slider");
 
     // Get list of readable files
     let getFileList = () => {
@@ -28,7 +30,34 @@
             };
         });
 
-        E.showMenu(menu);
+        E.showScroller({
+            h: 50,
+            c: files.length,
+            draw: (idx, rect) => {
+                g.setFont("Vector", 18);
+                let text = files[idx].split(".")[0];
+                let textWidth = g.stringWidth(text);
+                if (textWidth > 110) {
+                    const ellipsis = "...";
+                    const ellipsisWidth = g.stringWidth(ellipsis);
+                    while (textWidth + ellipsisWidth > 110 && text.length > 0) {
+                        text = text.slice(0, -1);
+                        textWidth = g.stringWidth(text);
+                    }
+                    text = text + ellipsis;
+                }
+                g.drawString(text, 5, rect.y + 15);
+                g.drawImage(files[idx].includes("off") ? off_switch : on_switch, 125, rect.y + 15, { scale: 0.85 });
+            },
+            select: (idx) => {
+                // Launch the selected app
+                toggleBootFile(files[idx], files[idx].includes("off"));
+            },
+            remove: () => {
+                // Remove button handler
+                setWatch(() => { }, BTN1);
+            }
+        });
     };
 
     // Function to rename a file by adding "off" to extension

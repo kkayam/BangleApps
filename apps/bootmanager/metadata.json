@@ -2,7 +2,7 @@
     "id": "bootmanager",
     "name": "Boot Manager",
     "shortName": "BootMgr",
-    "version": "0.1",
+    "version": "0.11",
     "description": "Manage boot applications on your Bangle.js",
     "type": "app",
     "tags": "tool,system,boot",

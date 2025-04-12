@@ -2,7 +2,7 @@
   "id": "cutegraphics",
   "name": "Cute Graphics",
   "shortName": "Graphics",
-  "version": "0.02",
+  "version": "0.04",
   "description": "A collection of cute graphics that can be used in other apps. Provides functions to list, get, and use graphics in your applications.",
   "icon": "app.png",
   "type": "module",

@@ -1,4 +1,4 @@
-{
+(function () {
     // Load settings
     let settings = require('Storage').readJSON('batterybooster.settings.json', 1) || {
         smartLCDTimeout: true,
@@ -9,9 +9,8 @@
 
     Bangle.on("lock", (on) => {
         if (on) {
-            softOffTimeout = setTimeout(() => Bangle.softOff(), 3 * 3600000);
-        }
-        else {
+            softOffTimeout = setTimeout(() => Bangle.softOff(), 10800000);
+        } else {
             if (softOffTimeout) clearTimeout(softOffTimeout);
         }
     });
@@ -40,4 +39,4 @@
             Bangle.setLCDBrightness(getBrightness(hour));
         }, 3600000);
     }
-}
+})()

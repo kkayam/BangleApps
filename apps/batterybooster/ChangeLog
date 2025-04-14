@@ -1,3 +1,4 @@
+0.51: Restructure code to possibly fix unreliable boot
 0.5: Remove settings to assure working auto soft off
 0.4: Another fix, and optimization of boot code
 0.3: Fix to unreliable auto soft-off behaviour

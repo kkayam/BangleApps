@@ -101,13 +101,17 @@
     var timeStr = wordFromHour(h);
     var dateStr = wordsFromDayMonth(day);
 
-    // draw time
+    // Calculate exact progress through the hour (0 to 1)
+    var progress = (m + s / 60) / 60;
+
+    // Set the background color based on progress
     g.setBgColor(g.theme.bg);
     g.clear();
+    g.setColor(g.theme.bg2).fillRect(0, 0, g.getWidth() * progress, g.getHeight());
 
     // Draw military time at the top only if smallNumeralClock is true
+    g.setColor(g.theme.fg);
     if (settings.smallNumeralClock) {
-      g.setColor(g.theme.bg2);
       g.setFontAlign(0, 0).setFont('4x5Numeric', 2);
       var militaryTime = ('0' + h).slice(-2) + ('0' + m).slice(-2);
       g.drawString(militaryTime, x, 20);
@@ -116,43 +120,21 @@
     // Calculate the appropriate font size to fit the screen
     let fontSize = 36; // Start with the original size
     let maxWidth = g.getWidth() * 0.9; // Use 90% of screen width as maximum
-
     // Test if the text fits with the current font size
-    g.setFontAlign(-1, 0).setFont('Vector', fontSize);
+    g.setFont('Vector', fontSize);
     let textWidth = g.stringWidth(timeStr);
-
     // If text is too wide, reduce font size until it fits
     while (textWidth > maxWidth && fontSize > 12) {
       fontSize -= 2;
       g.setFont('Vector', fontSize);
       textWidth = g.stringWidth(timeStr);
     }
-
-    // Calculate exact progress through the hour (0 to 1)
-    var progress = (m + s / 60) / 60;
-
-    var startX = x - textWidth / 2;
-
-    // Calculate the exact position where the color should change
-    var colorChangeX = startX + textWidth * progress;
-
-    // First draw the entire text in the uncolored version
-    g.setColor(g.theme.fg2);
-    g.drawString(timeStr, startX, y);
-
-    // Then draw the colored portion
-    if (progress > 0) {
-      g.setClipRect(startX, 0, colorChangeX, g.getHeight());
-      g.setColor(g.theme.bg2);
-      g.drawString(timeStr, startX, y);
-      // Reset clip rect to full screen
-      g.setClipRect(0, 0, g.getWidth(), g.getHeight());
-    }
+    // Draw the time text in the foreground color
+    g.drawString(timeStr, x, y);
 
     // draw date at bottom of screen
-    g.setColor(g.theme.fg2);
     g.setFontAlign(0, 0).setFont('Vector', 20);
-    g.drawString(g.wrapString(dateStr, g.getWidth()).join('\n'), x, g.getHeight() - 30);
+    g.drawString(dateStr, x, g.getHeight() - 30);
 
     queueDraw();
   };

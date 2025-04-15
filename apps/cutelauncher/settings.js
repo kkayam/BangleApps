@@ -17,11 +17,14 @@
         storage.write(SETTINGS_FILE, settings);
     }
 
-    // Get list of all apps
+    // Get list of all apps using .info files
     function getAllApps() {
-        return storage.list(/\.app\.js$/)
-            .filter(app => app !== "setting.app.js")
-            .sort();
+        return storage.list(/\.info$/)
+            .map(file => {
+                if (file === "setting.info") return;
+                const info = storage.readJSON(file, 1);
+                return info.name;
+            }).sort();
     }
 
     // Create menu object with all options

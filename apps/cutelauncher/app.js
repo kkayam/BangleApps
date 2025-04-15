@@ -3,7 +3,8 @@
     let settings = Object.assign(
         {
             showClocks: false,
-            scrollbar: true
+            scrollbar: true,
+            hide: []
         },
         s.readJSON('cutelauncher.settings.json', true) || {}
     );
@@ -20,7 +21,9 @@
                     var a = s.readJSON(app, 1);
                     return a && { name: a.name, type: a.type, icon: a.icon, sortorder: a.sortorder, src: a.src };
                 })
-                .filter((app) => app && (app.type == 'app' || (app.type == 'clock' && settings.showClocks) || !app.type))
+                .filter((app) => app &&
+                    (app.type == 'app' || (app.type == 'clock' && settings.showClocks) || !app.type) &&
+                    !settings.hide.includes(app.name))
                 .sort((a, b) => {
                     var n = (0 | a.sortorder) - (0 | b.sortorder);
                     if (n) return n; // do sortorder first

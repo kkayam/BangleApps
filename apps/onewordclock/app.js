@@ -113,17 +113,28 @@
       g.drawString(militaryTime, x, 20);
     }
 
-    g.setFontAlign(-1, 0).setFont('Vector', 36);
+    // Calculate the appropriate font size to fit the screen
+    let fontSize = 36; // Start with the original size
+    let maxWidth = g.getWidth() * 0.9; // Use 90% of screen width as maximum
+
+    // Test if the text fits with the current font size
+    g.setFontAlign(-1, 0).setFont('Vector', fontSize);
+    let textWidth = g.stringWidth(timeStr);
+
+    // If text is too wide, reduce font size until it fits
+    while (textWidth > maxWidth && fontSize > 12) {
+      fontSize -= 2;
+      g.setFont('Vector', fontSize);
+      textWidth = g.stringWidth(timeStr);
+    }
 
     // Calculate exact progress through the hour (0 to 1)
     var progress = (m + s / 60) / 60;
 
-    // Get total width of the word and starting position
-    var totalWidth = g.stringWidth(timeStr);
-    var startX = x - totalWidth / 2;
+    var startX = x - textWidth / 2;
 
     // Calculate the exact position where the color should change
-    var colorChangeX = startX + totalWidth * progress;
+    var colorChangeX = startX + textWidth * progress;
 
     // First draw the entire text in the uncolored version
     g.setColor(g.theme.fg2);

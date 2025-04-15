@@ -107,12 +107,14 @@
     // Set the background color based on progress
     g.setBgColor(g.theme.bg);
     g.clear();
-    g.setColor(g.theme.bg2).fillRect(0, 0, g.getWidth() * progress, g.getHeight());
+    if (m != 0) {
+      g.setColor(g.theme.bg2).fillRect(0, 0, g.getWidth() * progress, g.getHeight());
+    }
 
     // Draw military time at the top only if smallNumeralClock is true
-    g.setColor(g.theme.fg);
+    g.setFontAlign(0, 0).setColor(g.theme.fg);
     if (settings.smallNumeralClock) {
-      g.setFontAlign(0, 0).setFont('4x5Numeric', 2);
+      g.setFont('4x5Numeric', 2);
       var militaryTime = ('0' + h).slice(-2) + ('0' + m).slice(-2);
       g.drawString(militaryTime, x, 20);
     }
@@ -133,7 +135,7 @@
     g.drawString(timeStr, x, y);
 
     // draw date at bottom of screen
-    g.setFontAlign(0, 0).setFont('Vector', 20);
+    g.setFont('Vector', 20);
     g.drawString(dateStr, x, g.getHeight() - 30);
 
     queueDraw();

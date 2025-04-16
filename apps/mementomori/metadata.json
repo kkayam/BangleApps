@@ -2,7 +2,7 @@
     "id": "mementomori",
     "name": "Memento Mori",
     "shortName": "Memento",
-    "version": "0.02",
+    "version": "0.03",
     "description": "A year progress visualization app that shows how much of the current year has passed",
     "icon": "app-icon.js",
     "tags": "clock",

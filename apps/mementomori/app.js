@@ -7,8 +7,8 @@
         g.setFontAlign(0, 0);
 
         // Starting position
-        const startX = 2;
-        const startY = 2;
+        const startX = 0;
+        const startY = 0;
 
         // Get current day of year
         const now = new Date();
@@ -27,8 +27,8 @@
             g.fillRect(
                 startX,
                 startY,
-                startX + (GRID_SIZE * SQUARE_SIZE),
-                startY + (currentRow * SQUARE_SIZE)
+                176,
+                currentRow == 18 ? 176 - SQUARE_SIZE : startY + (currentRow * SQUARE_SIZE)
             );
         }
 
@@ -36,9 +36,9 @@
         if (currentCol > 0) {
             g.fillRect(
                 startX,
-                startY + (currentRow * SQUARE_SIZE),
+                currentRow == 18 ? 176 - SQUARE_SIZE : startY + (currentRow * SQUARE_SIZE),
                 startX + (currentCol * SQUARE_SIZE),
-                startY + ((currentRow + 1) * SQUARE_SIZE)
+                currentRow == 18 ? 176 : startY + ((currentRow + 1) * SQUARE_SIZE)
             );
         }
 
@@ -46,9 +46,9 @@
         g.setColor(1, 0, 0);
         g.fillRect(
             startX + (currentCol * SQUARE_SIZE),
-            startY + 1 + (currentRow * SQUARE_SIZE),
+            currentRow == 18 ? 176 - SQUARE_SIZE + 1 : startY + 1 + (currentRow * SQUARE_SIZE),
             startX + ((currentCol + 1) * SQUARE_SIZE),
-            startY + 1 + ((currentRow + 1) * SQUARE_SIZE)
+            currentRow == 18 ? 176 : startY + 1 + ((currentRow + 1) * SQUARE_SIZE)
         );
 
         // Draw percentage

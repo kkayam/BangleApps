@@ -1,0 +1,5 @@
+0.01: Initial release
+- Created basic grid visualization of year progress
+- Added percentage display
+- Implemented auto-update every minute
+- Added touch controls for exit 

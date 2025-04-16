@@ -1,0 +1,26 @@
+{
+    "id": "mementomori",
+    "name": "Memento Mori",
+    "shortName": "Memento",
+    "version": "0.01",
+    "description": "A year progress visualization app that shows how much of the current year has passed",
+    "icon": "app-icon.js",
+    "tags": "clock",
+    "supports": [
+        "BANGLEJS2"
+    ],
+    "storage": [
+        {
+            "name": "mementomori.app.js",
+            "url": "app.js"
+        }
+    ],
+    "screenshots": [
+        {
+            "url": "screenshot.png"
+        }
+    ],
+    "readme": "README.md",
+    "allow_emulator": true,
+    "type": "app"
+}

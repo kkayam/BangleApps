@@ -1,14 +1,12 @@
 {// Memento Mori - A year progress visualization app
     const GRID_SIZE = 19; // 19x19 grid to fit 365 days (361 squares)
     const SQUARE_SIZE = 9; // Size of each square in pixels
-    const GRID_PADDING = 0; // Padding between squares
-    let mementoInterval;
 
     const drawGrid = () => {
-        g.clear();
+        g.setBgColor(0.2, 0.2, 0.2).clear();
         g.setFontAlign(0, 0);
 
-        // Calculate total grid size
+        // Starting position
         const startX = 2;
         const startY = 2;
 
@@ -19,31 +17,39 @@
         const oneDay = 1000 * 60 * 60 * 24;
         const dayOfYear = Math.floor(diff / oneDay);
 
-        // Draw grid
-        let dayCount = 0;
-        for (let row = 0; row < GRID_SIZE; row++) {
-            for (let col = 0; col < GRID_SIZE; col++) {
-                const x = startX + (col * (SQUARE_SIZE + GRID_PADDING));
-                const y = startY + (row * (SQUARE_SIZE + GRID_PADDING));
+        // Calculate row and column for current day
+        const currentRow = Math.floor(dayOfYear / GRID_SIZE);
+        const currentCol = dayOfYear % GRID_SIZE;
 
-                if (dayCount < 365) {
-                    if (dayCount < dayOfYear) {
-                        // Past days
-                        g.setColor(0.7, 0.7, 0.7);
-                    } else if (dayCount === dayOfYear) {
-                        // Current day
-                        g.setColor(1, 0, 0);
-                    } else {
-                        // Future days
-                        g.setColor(0.2, 0.2, 0.2);
-                    }
-
-                    // Use fillRect to draw solid squares without outlines
-                    g.fillRect(x, y, x + SQUARE_SIZE, y + SQUARE_SIZE);
-                    dayCount++;
-                }
-            }
+        // Draw completed rows (past days)
+        g.setColor(0.7, 0.7, 0.7);
+        if (currentRow > 0) {
+            g.fillRect(
+                startX,
+                startY,
+                startX + (GRID_SIZE * SQUARE_SIZE),
+                startY + (currentRow * SQUARE_SIZE)
+            );
         }
+
+        // Draw current row up to today
+        if (currentCol > 0) {
+            g.fillRect(
+                startX,
+                startY + (currentRow * SQUARE_SIZE),
+                startX + (currentCol * SQUARE_SIZE),
+                startY + ((currentRow + 1) * SQUARE_SIZE)
+            );
+        }
+
+        // Draw today's square
+        g.setColor(1, 0, 0);
+        g.fillRect(
+            startX + (currentCol * SQUARE_SIZE),
+            startY + 1 + (currentRow * SQUARE_SIZE),
+            startX + ((currentCol + 1) * SQUARE_SIZE),
+            startY + 1 + ((currentRow + 1) * SQUARE_SIZE)
+        );
 
         // Draw percentage
         const percentage = Math.floor((dayOfYear / 365) * 100);
@@ -52,27 +58,7 @@
         g.drawString(percentage + "%", g.getWidth() / 2, g.getHeight() - 20);
     };
 
-    // Main app
-    const main = () => {
-        // Clear any existing interval
-        if (mementoInterval) clearInterval(mementoInterval);
-
-        // Initial draw
-        drawGrid();
-
-        // Update every minute
-        mementoInterval = setInterval(drawGrid, 60000);
-
-        // Handle touch events to exit
-        Bangle.on('touch', (button) => {
-            if (button === 1) { // Middle button
-                if (mementoInterval) clearInterval(mementoInterval);
-                load();
-            }
-        });
-    };
-
     // Start the app
     setWatch(Bangle.showClock, BTN1, { debounce: 100 });
-    main();
+    drawGrid();
 }

@@ -3,3 +3,9 @@
 - Added percentage display
 - Implemented auto-update every minute
 - Added touch controls for exit 
+
+0.02: Optimization update
+- Optimized drawing code by using large rectangles instead of individual squares
+- Improved performance by reducing the number of drawing operations
+- Adjusted square size and spacing for better visual appearance
+- Simplified app structure and removed unnecessary code 

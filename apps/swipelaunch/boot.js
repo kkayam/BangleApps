@@ -24,11 +24,10 @@
         const squareWidth = screen / settings.apps.length;
 
         // Create a new graphics instance for the overlay
-        const overlay = Graphics.createArrayBuffer(screen, squareHeight, 1);
-        overlay.setColor("#FFF").fillRect(currentIndex * squareWidth, 0, currentIndex * squareWidth + squareWidth, squareHeight);
+        const overlay = Graphics.createArrayBuffer(squareWidth, squareHeight, 1).setColor("#FFF").fillRect(0, 0, squareWidth, squareHeight);
 
         // Set the overlay at the bottom of the screen
-        Bangle.setLCDOverlay(overlay, 0, screen - squareHeight, {
+        Bangle.setLCDOverlay(overlay, currentIndex * squareWidth, screen - squareHeight, {
             id: "swipelaunch_indicators"
         });
 
@@ -73,7 +72,7 @@
                 Bangle.showLauncher();
                 setActive(false);
             } else if (lr !== 0) { // Left or right swipe
-                if (Bangle.CLOCK == 1) {
+                if (Bangle.CLOCK == 1 && !settings.active) {
                     setActive(true);
                 }
                 launchNextApp(lr === -1 ? "left" : "right");

@@ -67,16 +67,15 @@
     // Handle swipe events
     Bangle.on("swipe", (lr, ud) => {
         // Show indicators when the app starts
-        if (Bangle.CLOCK == 1 && lr !== 0) {
-            setActive(true);
-            launchNextApp(lr === -1 ? "left" : "right");
-        }
-        else if (settings.active) {
+        if (settings.active || Bangle.CLOCK == 1) {
             if (ud === 1) { // Swipe down
                 clearIndicators();
                 Bangle.showLauncher();
                 setActive(false);
             } else if (lr !== 0) { // Left or right swipe
+                if (Bangle.CLOCK == 1) {
+                    setActive(true);
+                }
                 launchNextApp(lr === -1 ? "left" : "right");
             }
         }

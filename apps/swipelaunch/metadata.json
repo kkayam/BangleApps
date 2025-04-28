@@ -1,0 +1,27 @@
+{
+    "id": "swipelaunch",
+    "name": "Swipe Launch",
+    "shortName": "SwipeLaunch",
+    "version": "0.01",
+    "description": "Swipe left/right to cycle through preselected apps, swipe down to return to launcher",
+    "icon": "app.png",
+    "tags": "launcher",
+    "supports": [
+        "BANGLEJS2"
+    ],
+    "storage": [
+        {
+            "name": "swipelaunch.boot.js",
+            "url": "boot.js"
+        },
+        {
+            "name": "swipelaunch.settings.js",
+            "url": "settings.js"
+        }
+    ],
+    "data": [
+        {
+            "name": "swipelaunch.json"
+        }
+    ]
+}

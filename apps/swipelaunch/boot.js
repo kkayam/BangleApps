@@ -14,6 +14,34 @@
         storage.writeJSON("swipelaunch.json", settings);
     };
 
+    // Function to create and show app indicators using LCD overlay
+    const showAppIndicators = () => {
+        if (!settings.apps || settings.apps.length === 0) return;
+
+        const currentIndex = getCurrentApp();
+        const screen = 176;
+        const squareHeight = 7; // Size of each square indicator
+        const squareWidth = screen / settings.apps.length;
+
+        // Create a new graphics instance for the overlay
+        const overlay = Graphics.createArrayBuffer(screen, squareHeight, 1);
+        overlay.setColor("#FFF").fillRect(currentIndex * squareWidth, 0, currentIndex * squareWidth + squareWidth, squareHeight);
+
+        // Set the overlay at the bottom of the screen
+        Bangle.setLCDOverlay(overlay, 0, screen - squareHeight, {
+            id: "swipelaunch_indicators"
+        });
+
+        setTimeout(clearIndicators, 1500);
+    };
+
+    // Function to clear the overlay
+    const clearIndicators = () => {
+        Bangle.setLCDOverlay(undefined, 0, 0, {
+            id: "swipelaunch_indicators"
+        });
+    };
+
     // Launch the next app in the sequence
     const launchNextApp = (direction) => {
         if (!settings.apps || settings.apps.length === 0) return;
@@ -27,21 +55,25 @@
         }
 
         const nextAppSrc = settings.apps[currentIndex];
-
         if (nextAppSrc === "clock") Bangle.showClock();
         else if (nextAppSrc === "launcher") Bangle.showLauncher();
         else load(nextAppSrc);
     };
 
+    E.on("init", () => {
+        if (settings.active) showAppIndicators();
+    });
+
     // Handle swipe events
     Bangle.on("swipe", (lr, ud) => {
-        console.log("current app: ", getCurrentApp());
+        // Show indicators when the app starts
         if (Bangle.CLOCK == 1 && lr !== 0) {
             setActive(true);
             launchNextApp(lr === -1 ? "left" : "right");
         }
         else if (settings.active) {
             if (ud === 1) { // Swipe down
+                clearIndicators();
                 Bangle.showLauncher();
                 setActive(false);
             } else if (lr !== 0) { // Left or right swipe

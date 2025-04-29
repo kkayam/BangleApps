@@ -1,12 +1,17 @@
 {
     "id": "watchstatus",
-    "name": "Watch Status test",
+    "name": "Watch Status",
     "shortName": "WatchStatus",
     "version": "0.01",
     "description": "Displays various watch status information",
     "icon": "app.png",
     "tags": "status,info",
     "allow_emulator": true,
+    "supports": [
+        "BANGLEJS",
+        "BANGLEJS2"
+    ],
+    "readme": "README.md",
     "storage": [
         {
             "name": "watchstatus.app.js",

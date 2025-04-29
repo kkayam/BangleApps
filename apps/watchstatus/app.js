@@ -103,7 +103,6 @@
         const verticalPadding = 2;
         const horizontalPadding = 30; // Increased horizontal padding to 30px
         const batteryWidth = width - horizontalPadding * 2; // Leave space for the battery tip
-        const batteryHeight = height - verticalPadding * 2;
 
         // Battery outline
         g.setColor(g.theme.fg);

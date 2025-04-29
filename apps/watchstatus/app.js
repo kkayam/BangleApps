@@ -3,8 +3,17 @@
     const locale = require('locale');
     let ENV = process.env;
 
+    // Battery visualization settings
+    const ITEM_HEIGHT = 25; // Fixed height for all items
+
     // Combine all items into a single array
     let allItems = [
+        // Empty rows at top
+        { name: "", fun: () => "" },
+        // Battery visualization (spans two rows)
+        { name: "BATTERY_TOP", fun: () => "" },
+        { name: "BATTERY_BOTTOM", fun: () => "" },
+        { name: "", fun: () => "" }, // Spacer
         // General section
         { name: "Steps", fun: () => getSteps() },
         { name: "HRM", fun: () => getBpm() },
@@ -86,17 +95,83 @@
         }
     };
 
+    // Draw battery visualization
+    const drawBattery = (r, isTop) => {
+        const batteryLevel = E.getBattery();
+        const width = r.w;
+        const height = r.h;
+        const verticalPadding = 2;
+        const horizontalPadding = 30; // Increased horizontal padding to 30px
+        const batteryWidth = width - horizontalPadding * 2; // Leave space for the battery tip
+        const batteryHeight = height - verticalPadding * 2;
+
+        // Battery outline
+        g.setColor(g.theme.fg);
+
+        if (isTop) {
+            // Draw top part of battery
+            g.drawLine(r.x + horizontalPadding, r.y + verticalPadding, r.x + horizontalPadding + batteryWidth, r.y + verticalPadding); // top
+            g.drawLine(r.x + horizontalPadding, r.y + verticalPadding, r.x + horizontalPadding, r.y + height); // left
+            g.drawLine(r.x + horizontalPadding + batteryWidth, r.y + verticalPadding, r.x + horizontalPadding + batteryWidth, r.y + height); // right
+        } else {
+            // Draw bottom part of battery
+            g.drawLine(r.x + horizontalPadding, r.y, r.x + horizontalPadding, r.y + height - verticalPadding);
+            g.drawLine(r.x + horizontalPadding + batteryWidth, r.y, r.x + horizontalPadding + batteryWidth, r.y + height - verticalPadding);
+            g.drawLine(r.x + horizontalPadding, r.y + height - verticalPadding, r.x + horizontalPadding + batteryWidth, r.y + height - verticalPadding);
+        }
+
+        // Battery level
+        const fillWidth = Math.floor((batteryWidth - 2) * (batteryLevel / 100));
+        if (fillWidth > 0) {
+            // Color based on battery level
+            if (batteryLevel <= 20) {
+                g.setColor("#FF0000"); // Red for low battery
+            } else if (batteryLevel <= 50) {
+                g.setColor("#FFFF00"); // Yellow for medium battery
+            } else {
+                g.setColor("#00FF00"); // Green for good battery
+            }
+
+            if (isTop) {
+                // Fill top part
+                g.fillRect(r.x + horizontalPadding + 1, r.y + verticalPadding + 1,
+                    r.x + horizontalPadding + 1 + fillWidth, r.y + height - 1);
+            } else {
+                // Fill bottom part
+                g.fillRect(r.x + horizontalPadding + 1, r.y,
+                    r.x + horizontalPadding + 1 + fillWidth, r.y + height - verticalPadding - 1);
+            }
+        }
+
+        // Battery percentage text (only on top row)
+        if (isTop) {
+            g.setColor(g.theme.fg);
+            g.setFontAlign(0, 0);
+            g.setFont("Vector", 16);
+            g.drawString(batteryLevel + "%", r.x + width / 2, r.y + height / 2);
+        }
+    };
+
     // Show all items in a scrollable list
     E.showScroller({
-        h: 25, // height of each item
+        h: ITEM_HEIGHT, // Fixed height for all items
         c: allItems.length, // number of items
         draw: (idx, r) => {
             let item = allItems[idx];
             g.setBgColor(g.theme.bg).clearRect(r.x, r.y, r.x + r.w, r.y + r.h);
-            g.setColor(g.theme.fg).setFontAlign(-1, -1);
-            g.setFont("Vector", 16);
-            g.drawString(item.name, r.x + 10, r.y + 4);
-            g.drawString(item.fun(), r.x + 100, r.y + 4);
+
+            if (item.name === "BATTERY_TOP") {
+                drawBattery(r, true);
+            } else if (item.name === "BATTERY_BOTTOM") {
+                drawBattery(r, false);
+            } else if (item.name !== "") {
+                g.setColor(g.theme.fg).setFontAlign(-1, -1);
+                g.setFont("Vector", 16);
+                g.drawString(item.name, r.x + 10, r.y + 4);
+                g.drawString(item.fun(), r.x + 100, r.y + 4);
+            }
         }
     });
+
+    setWatch(Bangle.showClock, BTN1, { debounce: 100 });
 }

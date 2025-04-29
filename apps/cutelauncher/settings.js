@@ -56,6 +56,7 @@
         // Add app toggle options at root level
         const allApps = getAllApps();
         allApps.forEach(app => {
+            if (!app) return;
             const appName = app.replace(/\.app\.js$/, '');
             menu[appName] = {
                 value: !settings.hide.includes(appName),

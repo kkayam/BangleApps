@@ -4,7 +4,7 @@
 
     // Function to get the current app from storage
     const getCurrentApp = () => {
-        if (Bangle.CLOCK == 1) return 0;
+        if (!global.__FILE__ || global.__FILE__ === ".bootcde") return settings.apps.indexOf("clock");
         return settings.apps.indexOf(global.__FILE__);
     };
 
@@ -62,6 +62,8 @@
     E.on("init", () => {
         if (settings.active) showAppIndicators();
     });
+
+
 
     // Handle swipe events
     Bangle.on("swipe", (lr, ud) => {

@@ -1,6 +1,6 @@
 {
     "id": "watchstatus",
-    "name": "Watch Status",
+    "name": "Watch Status test",
     "shortName": "WatchStatus",
     "version": "0.01",
     "description": "Displays various watch status information",

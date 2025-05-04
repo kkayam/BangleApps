@@ -38,11 +38,6 @@
         // Add app selection option
         mainmenu["Add App"] = () => { showAppMenu(); };
 
-        // Add remove option if there are apps
-        if (settings.apps.length > 0) {
-            mainmenu["Remove App"] = () => { showRemoveMenu(); };
-        }
-
         // Show current sequence
         mainmenu["Current Sequence:"] = () => { };
         if (settings.apps.length === 0) {
@@ -50,7 +45,11 @@
         } else {
             settings.apps.forEach((appSrc, i) => {
                 const app = apps.find(a => a.src === appSrc);
-                mainmenu[`${i + 1}. ${app ? app.name : appSrc}`] = () => { };
+                mainmenu[`${i + 1}. ${app ? app.name : appSrc}`] = () => {
+                    settings.apps.splice(i, 1);
+                    storage.writeJSON("clockhub.json", settings);
+                    showMainMenu();
+                };
             });
         }
 
@@ -67,31 +66,13 @@
             if (!settings.apps.includes(app.src)) {
                 appmenu[app.name] = () => {
                     settings.apps.push(app.src);
-                    storage.writeJSON("swipelaunch.json", settings);
+                    storage.writeJSON("clockhub.json", settings);
                     showMainMenu();
                 };
             }
         });
 
         return E.showMenu(appmenu);
-    }
-
-    function showRemoveMenu() {
-        var removemenu = {
-            "": { "title": "Remove App" },
-            "< Back": showMainMenu
-        };
-
-        settings.apps.forEach((appSrc, i) => {
-            const app = apps.find(a => a.src === appSrc);
-            removemenu[app ? app.name : appSrc] = () => {
-                settings.apps.splice(i, 1);
-                storage.writeJSON("swipelaunch.json", settings);
-                showMainMenu();
-            };
-        });
-
-        return E.showMenu(removemenu);
     }
 
     showMainMenu();

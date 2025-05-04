@@ -1,6 +1,6 @@
 {
     const storage = require("Storage");
-    let settings = storage.readJSON("swipelaunch.json", true) || {};
+    let settings = storage.readJSON("clockhub.json", true) || {};
 
     // Function to get the current app from storage
     const getCurrentApp = () => {
@@ -11,7 +11,7 @@
     // Function to set the current app in storage
     const setActive = (active) => {
         settings.active = active;
-        storage.writeJSON("swipelaunch.json", settings);
+        storage.writeJSON("clockhub.json", settings);
     };
 
     // Function to create and show app indicators using LCD overlay
@@ -28,7 +28,7 @@
 
         // Set the overlay at the bottom of the screen
         Bangle.setLCDOverlay(overlay, currentIndex * squareWidth, screen - squareHeight, {
-            id: "swipelaunch_indicators"
+            id: "clockhub_indicators"
         });
 
         setTimeout(clearIndicators, 1500);
@@ -37,7 +37,7 @@
     // Function to clear the overlay
     const clearIndicators = () => {
         Bangle.setLCDOverlay(undefined, 0, 0, {
-            id: "swipelaunch_indicators"
+            id: "clockhub_indicators"
         });
     };
 

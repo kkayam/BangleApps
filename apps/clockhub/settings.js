@@ -1,6 +1,6 @@
 (function (back) {
     var storage = require("Storage");
-    var settings = storage.readJSON("swipelaunch.json", true) || {};
+    var settings = storage.readJSON("clockhub.json", true) || {};
     if (!settings.apps) settings.apps = [];
 
     // Get list of all available apps
@@ -31,7 +31,7 @@
 
     function showMainMenu() {
         var mainmenu = {
-            "": { "title": "Swipe Launch" },
+            "": { "title": "Clock Hub" },
             "< Back": () => { load(); }
         };
 

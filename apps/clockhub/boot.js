@@ -63,17 +63,11 @@
         if (settings.active) showAppIndicators();
     });
 
-
-
     // Handle swipe events
     Bangle.on("swipe", (lr, ud) => {
         // Show indicators when the app starts
         if (settings.active || Bangle.CLOCK == 1) {
-            if (ud === 1) { // Swipe down
-                clearIndicators();
-                Bangle.showLauncher();
-                setActive(false);
-            } else if (lr !== 0) { // Left or right swipe
+            if (lr !== 0) { // Left or right swipe
                 if (Bangle.CLOCK == 1 && !settings.active) {
                     setActive(true);
                 }
@@ -81,4 +75,13 @@
             }
         }
     });
+
+    // Handle BTN1 press to open launcher
+    setWatch(() => {
+        if (settings.active) {
+            clearIndicators();
+            Bangle.showLauncher();
+            setActive(false);
+        }
+    }, BTN1, { repeat: true, edge: "falling" });
 }

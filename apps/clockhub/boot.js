@@ -36,9 +36,7 @@
 
     // Function to clear the overlay
     const clearIndicators = () => {
-        Bangle.setLCDOverlay(undefined, 0, 0, {
-            id: "clockhub_indicators"
-        });
+        Bangle.setLCDOverlay(undefined, { id: "clockhub_indicators" });
     };
 
     // Launch the next app in the sequence
@@ -64,7 +62,7 @@
         // Handle BTN1 press to open launcher
         setWatch(() => {
             if (settings.active) {
-                clearIndicators();
+                // clearIndicators();
                 Bangle.showLauncher();
                 setActive(false);
             }

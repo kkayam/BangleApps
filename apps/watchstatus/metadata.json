@@ -2,7 +2,7 @@
     "id": "watchstatus",
     "name": "Watch Status",
     "shortName": "WatchStatus",
-    "version": "0.01",
+    "version": "0.02",
     "description": "Displays various watch status information",
     "icon": "app.png",
     "tags": "status,info",

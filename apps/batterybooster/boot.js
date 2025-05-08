@@ -2,41 +2,44 @@
     // Load settings
     let settings = require('Storage').readJSON('batterybooster.settings.json', 1) || {
         smartLCDTimeout: true,
-        autoBrightness: true
+        autoBrightness: true,
+        enableSoftOff: true,
+        softOffHours: 3
     };
 
     let softOffTimeout;
 
+    let setBrightness = () => {
+        const d = new Date();
+        let hour = d.getHours();
+        let radians = (Math.PI / 12) * (hour - 6);
+        let brightness = Math.sin(radians) / 2 + 0.5;
+        Bangle.setLCDBrightness(brightness);
+    }
+
     Bangle.on("lock", (on) => {
         if (on) {
-            softOffTimeout = setTimeout(() => Bangle.softOff(), 10800000);
+            if (settings.autoBrightness) {
+                setBrightness();
+            }
+            if (settings.smartLCDTimeout) {
+                Bangle.setLCDTimeout(2);
+            }
+
+            if (settings.enableSoftOff) {
+                softOffTimeout = setTimeout(() => Bangle.softOff(), settings.softOffHours * 3600000);
+            }
         } else {
             if (softOffTimeout) clearTimeout(softOffTimeout);
         }
     });
 
     if (settings.smartLCDTimeout) {
-        Bangle.on("lock", (on) => {
-            if (on) {
-                Bangle.setLCDTimeout(2);
-            }
-        });
         Bangle.on("touch", () => {
             Bangle.setLCDTimeout(10);
         });
-    }
-
-    if (settings.autoBrightness) {
-        setInterval(() => {
-            let getBrightness = (hour) => {
-                let radians = (Math.PI / 12) * (hour - 6);
-                let brightness = Math.sin(radians) / 2 + 0.5;
-                return brightness;
-            };
-
-            const d = new Date();
-            let hour = d.getHours();
-            Bangle.setLCDBrightness(getBrightness(hour));
-        }, 3600000);
+        Bangle.on("swipe", () => {
+            Bangle.setLCDTimeout(10);
+        });
     }
 })()

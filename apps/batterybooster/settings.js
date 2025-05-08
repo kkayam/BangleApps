@@ -5,7 +5,9 @@
     const storage = require('Storage');
     let settings = {
         smartLCDTimeout: true,
-        autoBrightness: true
+        autoBrightness: true,
+        enableSoftOff: true,
+        softOffHours: 3  // Default to 3 hours
     };
 
     // Load saved settings
@@ -32,6 +34,23 @@
             value: settings.autoBrightness,
             onchange: () => {
                 settings.autoBrightness = !settings.autoBrightness;
+                save();
+            }
+        },
+        'Enable Soft Off': {
+            value: settings.enableSoftOff,
+            onchange: () => {
+                settings.enableSoftOff = !settings.enableSoftOff;
+                save();
+            }
+        },
+        'Soft Off Hours': {
+            value: settings.softOffHours,
+            min: 1,
+            max: 12,
+            step: 1,
+            onchange: (v) => {
+                settings.softOffHours = v;
                 save();
             }
         }

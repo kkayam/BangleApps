@@ -61,6 +61,14 @@
 
     E.on("init", () => {
         if (settings.active) showAppIndicators();
+        // Handle BTN1 press to open launcher
+        setWatch(() => {
+            if (settings.active) {
+                clearIndicators();
+                Bangle.showLauncher();
+                setActive(false);
+            }
+        }, BTN1, { repeat: true, edge: "falling" });
     });
 
     // Handle swipe events
@@ -75,13 +83,4 @@
             }
         }
     });
-
-    // Handle BTN1 press to open launcher
-    setWatch(() => {
-        if (settings.active) {
-            clearIndicators();
-            Bangle.showLauncher();
-            setActive(false);
-        }
-    }, BTN1, { repeat: true, edge: "falling" });
 }

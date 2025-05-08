@@ -2,7 +2,7 @@
     "id": "clockhub",
     "name": "Clock Hub",
     "shortName": "ClockHub",
-    "version": "0.03",
+    "version": "0.04",
     "description": "Swipe left/right to cycle through preselected apps, press BTN1 to return to launcher",
     "icon": "app.png",
     "tags": "boot",

@@ -1,6 +1,15 @@
 {// Memento Mori - A month progress visualization app
     const DAYS_IN_WEEK = 7;
     const SQUARE_SIZE = 20; // Size of each square in pixels
+    const storage = require('Storage');
+    const STORAGE_FILE = "mementomori.json";
+
+    // Load or initialize mood data
+    let moodData = storage.readJSON(STORAGE_FILE, 1) || {};
+    const currentYear = new Date().getFullYear();
+    if (!moodData[currentYear]) {
+        moodData[currentYear] = {};
+    }
 
     const drawGrid = () => {
         g.setBgColor(g.theme.bg).clear();
@@ -49,9 +58,21 @@
                 // Stop if we've drawn all days
                 if (dayCount > daysInMonth) break;
 
+                // Check if we have mood data for this day
+                const dateKey = `${currentMonth + 1}-${dayCount}`;
+                const dayMood = moodData[currentYear][dateKey];
+
                 // Draw the day block
-                if (dayCount < currentDate) {
-                    // Past days
+                if (dayMood === 'g') {
+                    // Good day
+                    g.setColor('#00FF00'); // Green
+                    g.fillRect(x + 1, y + 1, x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1);
+                } else if (dayMood === 'b') {
+                    // Bad day
+                    g.setColor('#FF0000'); // Red
+                    g.fillRect(x + 1, y + 1, x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1);
+                } else if (dayCount < currentDate) {
+                // Past days without mood
                     g.setColor(g.theme.fg2);
                     g.fillRect(x + 1, y + 1, x + SQUARE_SIZE - 1, y + SQUARE_SIZE - 1);
                 } else if (dayCount === currentDate) {
@@ -74,6 +95,26 @@
         g.setFont("6x8", 2);
         g.drawString(percentage + "%", g.getWidth() / 2, g.getHeight() - 20);
     };
+
+    // Handle touch input
+    Bangle.on('touch', function (button, xy) {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const dayNumber = now.getDate();
+        const currentYear = now.getFullYear();
+
+        const dateKey = `${currentMonth + 1}-${dayNumber}`;
+
+        // Toggle between good and bad based on y position
+        const isGood = xy.y < 88;
+        moodData[currentYear][dateKey] = isGood ? 'g' : 'b';
+
+        // Save the data
+        storage.writeJSON(STORAGE_FILE, moodData);
+
+        // Redraw the grid
+        drawGrid();
+    });
 
     // Start the app
     setWatch(Bangle.showClock, BTN1, { debounce: 100 });

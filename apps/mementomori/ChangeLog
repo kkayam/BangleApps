@@ -11,3 +11,9 @@
 - Simplified app structure and removed unnecessary code 
 
 0.03: Perfectly fill the screen
+
+0.04: Theme support
+- Added support for Bangle.js theme system
+- Replaced hardcoded colors with theme colors
+- Improved visual consistency with other apps
+- Better accessibility through theme integration

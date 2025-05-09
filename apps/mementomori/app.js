@@ -3,7 +3,7 @@
     const SQUARE_SIZE = 9; // Size of each square in pixels
 
     const drawGrid = () => {
-        g.setBgColor(0.2, 0.2, 0.2).clear();
+        g.setBgColor(g.theme.bg).clear();
         g.setFontAlign(0, 0);
 
         // Starting position
@@ -22,7 +22,7 @@
         const currentCol = dayOfYear % GRID_SIZE;
 
         // Draw completed rows (past days)
-        g.setColor(0.7, 0.7, 0.7);
+        g.setColor(g.theme.bg2);
         if (currentRow > 0) {
             g.fillRect(
                 startX,
@@ -43,7 +43,7 @@
         }
 
         // Draw today's square
-        g.setColor(1, 0, 0);
+        g.setColor(g.theme.fg);
         g.fillRect(
             startX + (currentCol * SQUARE_SIZE),
             currentRow == 18 ? 176 - SQUARE_SIZE + 1 : startY + 1 + (currentRow * SQUARE_SIZE),
@@ -53,7 +53,7 @@
 
         // Draw percentage
         const percentage = Math.floor((dayOfYear / 365) * 100);
-        g.setColor(1, 1, 1);
+        g.setColor(g.theme.fg);
         g.setFont("6x8", 2);
         g.drawString(percentage + "%", g.getWidth() / 2, g.getHeight() - 20);
     };
